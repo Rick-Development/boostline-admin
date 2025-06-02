@@ -310,6 +310,17 @@ function SidebarMenu() {
                   Send Mail
                 </Button>
               </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/general_notification"
+                  startIcon={<NotificationsActive />}
+                >
+                  Send Notification
+                </Button>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>

@@ -63,6 +63,10 @@ const SocialSettings = Loader(
   lazy(() => import('src/content/applications/Settings/socialPackage'))
 );
 
+const GeneralNotification = Loader(
+  lazy(() => import('src/content/applications/General Notification'))
+);
+
 const UserSettings = Loader(
   lazy(() => import('src/content/applications/Users/settings'))
 );
@@ -149,6 +153,7 @@ const routes: RouteObject[] = [
       createRoute('activation', <Activation />, true),
       createRoute('subscription', <Socials />, true),
       createRoute('notification', <Notifications />, true),
+      createRoute('general_notification', <GeneralNotification />, true),
       {
         path: 'profile',
         children: [

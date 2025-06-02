@@ -16,12 +16,12 @@ import ReactQuill from 'react-quill';
 //import 'react-quill/dist/quill.snow.css'; // Quill editor's CSS
 import 'quill/dist/quill.snow.css';
 
-import useUserData from 'src/hooks/useUserData';
+//import useUserData from 'src/hooks/useUserData';
 // import useUserData from 'path-to-your-hook'; // Adjust path accordingly
 
 interface PageFormProps {
   loading?: boolean;
-  onSubmit: (formData: any) => void;
+  onSubmit: (title: string, message: string) => void;
 }
 
 export default function PageForm({
@@ -29,24 +29,20 @@ export default function PageForm({
   loading: dataLoading
 }: PageFormProps) {
   const [formData, setFormData] = useState({
-    emails: 'all',
-    subject: 'Test Mail',
-    body: 'We are excited to have you on board! Your account has been created successfully.\n\n<b>Please verify your email to get started.</b>',
-    greetings: 'Dear {{name}}',
-    signature: 'Best regards',
-    status: 'draft'
+    title: 'all',
+    message: 'Test Mail'
   });
   const [loading, setLoading] = useState(dataLoading);
-  const [emailType, setEmailType] = useState(formData.emails);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const {
-    users: userList,
-    loading: userLoading,
-    error: userError,
-    setPage,
-    totalPages
-  } = useUserData(0, 10, searchTerm); // Fetch users based on search term
+  // const [emailType, setEmailType] = useState(formData.emails);
+  //const [searchTerm, setSearchTerm] = useState('');
+  // const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  // const {
+  //   users: userList,
+  //   loading: userLoading,
+  //   error: userError,
+  //   setPage,
+  //   totalPages
+  // } = useUserData(0, 10, searchTerm); // Fetch users based on search term
 
   useEffect(() => {
     setLoading(dataLoading);
@@ -60,7 +56,7 @@ export default function PageForm({
   };
 
   const handleContentChange = (value: string) => {
-    setFormData({ ...formData, body: value });
+    setFormData({ ...formData, message: value });
   };
 
   const handleStatusChange = (
@@ -74,26 +70,26 @@ export default function PageForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit(formData.title, formData.message);
   };
 
   // Handle user search input
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchTerm(event.target.value);
+  // };
 
   // Handle user selection (comma separated)
-  const handleUserSelection = (event: any, newValue: string[]) => {
-    // Ensure the custom email type remains set
-    setEmailType('custom');
+  // const handleUserSelection = (event: any, newValue: string[]) => {
+  //   // Ensure the custom email type remains set
+  //   setEmailType('custom');
 
-    // Set selected users and update formData accordingly
-    setSelectedUsers(newValue);
-    setFormData({
-      ...formData,
-      emails: newValue.length > 0 ? newValue.join(', ') : 'custom'
-    });
-  };
+  //   // Set selected users and update formData accordingly
+  //   setSelectedUsers(newValue);
+  //   setFormData({
+  //     ...formData,
+  //     emails: newValue.length > 0 ? newValue.join(', ') : 'custom'
+  //   });
+  // };
 
   return (
     <Box
@@ -113,25 +109,17 @@ export default function PageForm({
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
           Recipients
         </Typography>
-        <TextField
-          fullWidth
-          select
-          name="emails"
-          value={formData.emails}
-          onChange={handleInputChange}
-          variant="outlined"
-          required
-        >
+        <TextField fullWidth select variant="outlined" required>
           <MenuItem value="all">All Users</MenuItem>
-          <MenuItem value="active">Active Users</MenuItem>
+          {/* <MenuItem value="active">Active Users</MenuItem>
           <MenuItem value="inactive">Inactive Users</MenuItem>
           <MenuItem value="disabled">Disabled Users</MenuItem>
           <MenuItem value="custom" onClick={() => setEmailType('custom')}>
             Custom Users
-          </MenuItem>
+          </MenuItem> */}
         </TextField>
 
-        {emailType === 'custom' && (
+        {/* {emailType === 'custom' && (
           <>
             <Autocomplete
               multiple
@@ -166,20 +154,20 @@ export default function PageForm({
               <Typography color="error">Error loading users</Typography>
             )}
           </>
-        )}
+        )} */}
       </Box>
 
       {/* Subject */}
       <Box sx={{ my: 3 }}>
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
-          Subject
+          Title
         </Typography>
         <TextField
           fullWidth
-          name="subject"
-          value={formData.subject}
+          name="title"
+          value={formData.title}
           onChange={handleInputChange}
-          placeholder="Enter email subject"
+          placeholder="Enter Notification Title"
           variant="outlined"
           required
         />
@@ -188,19 +176,19 @@ export default function PageForm({
       {/* Body Content */}
       <Box sx={{ my: 3, mb: 10 }}>
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
-          Body
+          Message
         </Typography>
         <ReactQuill
-          value={formData.body}
+          value={formData.message}
           onChange={handleContentChange}
-          placeholder="Enter email body content"
+          placeholder="Enter your message content"
           style={{ height: '250px', maxHeight: '100%', marginBottom: 2 }}
           theme="snow"
         />
       </Box>
 
       {/* Greetings */}
-      <Box sx={{ my: 3 }}>
+      {/* <Box sx={{ my: 3 }}>
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
           Greetings
         </Typography>
@@ -213,10 +201,10 @@ export default function PageForm({
           variant="outlined"
           required
         />
-      </Box>
+      </Box> */}
 
       {/* Signature */}
-      <Box sx={{ my: 3 }}>
+      {/* <Box sx={{ my: 3 }}>
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
           Signature
         </Typography>
@@ -229,10 +217,10 @@ export default function PageForm({
           variant="outlined"
           required
         />
-      </Box>
+      </Box> */}
 
       {/* Status Toggle */}
-      <Box sx={{ my: 3 }}>
+      {/* <Box sx={{ my: 3 }}>
         <Typography gutterBottom mb={1} fontWeight={800} variant="h4">
           Status
         </Typography>
@@ -250,7 +238,7 @@ export default function PageForm({
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2 }} /> */}
 
       {/* Submit Button */}
       <Box
@@ -273,7 +261,7 @@ export default function PageForm({
             fontSize: '16px' // Optional: Increase font size
           }}
         >
-          {loading ? 'Saving...' : 'Send Email'}
+          {loading ? 'Saving...' : 'Send Notification'}
         </Button>
       </Box>
     </Box>
